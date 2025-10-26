@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Динамічна таблиця AJAX</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h2>Таблиця даних з API</h2>
+  <button id="refresh">Оновити</button>
+  <button id="sortName">Сортувати за ім'ям</button>
+  <button id="sortAff">Сортувати за фракцією</button>
+  <table border="1" id="dataTable">
+    <thead>
+      <tr><th>Ім'я</th><th>Фракція</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let data = [];
+
+    function loadData() {
+      $.getJSON("http://lab.vntu.org/api-server/lab7.php", function(response) {
+        data = response;
+        displayData(data);
+      });
+    }
+
+    function displayData(arr) {
+      let rows = "";
+      arr.forEach(item => {
+        rows += `<tr><td>${item.name}</td><td>${item.affiliation}</td></tr>`;
+      });
+      $("#dataTable tbody").html(rows);
+    }
+
+    $("#refresh").click(loadData);
+    $("#sortName").click(() => {
+      data.sort((a,b) => a.name.localeCompare(b.name));
+      displayData(data);
+    });
+    $("#sortAff").click(() => {
+      data.sort((a,b) => a.affiliation.localeCompare(b.affiliation));
+      displayData(data);
+    });
+
+    loadData(); // автоматичне завантаження при старті
+  </script>
+</body>
+</html>

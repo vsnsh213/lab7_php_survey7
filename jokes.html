@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Жарти AJAX</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h2>Отримай випадковий жарт</h2>
+  <button id="btn">Показати жарт</button>
+  <p id="joke"></p>
+
+  <script>
+    $("#btn").click(function() {
+      $.ajax({
+        url: "jokes.txt",
+        success: function(data) {
+          const jokes = data.split("\n");
+          const random = jokes[Math.floor(Math.random() * jokes.length)];
+          $("#joke").text(random);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

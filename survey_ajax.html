@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>AJAX-опитування про соцмережі</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h2>Анкета: Використання соціальних мереж (AJAX)</h2>
+
+  <form id="surveyForm">
+      Ім'я: <input type="text" name="name" required><br><br>
+      Email: <input type="email" name="email" required><br><br>
+
+      1. Якою соціальною мережею ви користуєтесь найчастіше?<br>
+      <select name="network">
+          <option>Instagram</option>
+          <option>Facebook</option>
+          <option>TikTok</option>
+          <option>Twitter</option>
+          <option>Інша</option>
+      </select><br><br>
+
+      2. Скільки часу на день ви проводите в соцмережах?<br>
+      <input type="radio" name="time" value="до 1 години"> До 1 години<br>
+      <input type="radio" name="time" value="1-3 години"> 1–3 години<br>
+      <input type="radio" name="time" value="більше 3 годин"> Більше 3 годин<br><br>
+
+      3. Що ви зазвичай робите у соцмережах?<br>
+      <textarea name="activity" rows="3" cols="40"></textarea><br><br>
+
+      <button type="submit">Надіслати</button>
+  </form>
+
+  <div id="response"></div>
+
+  <script>
+    $("#surveyForm").on("submit", function(e) {
+      e.preventDefault(); // блокує стандартну відправку форми
+
+      $.ajax({
+        url: "save_survey.php",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(result) {
+          $("#response").html(result);
+        },
+        error: function() {
+          $("#response").html("<p>❌ Сталася помилка при відправці даних.</p>");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
